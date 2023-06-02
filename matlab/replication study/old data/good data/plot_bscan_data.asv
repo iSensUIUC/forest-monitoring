@@ -1,0 +1,101 @@
+clear
+clc
+close all;
+
+file_name = '82cm_full_bottle_water_soil_84cm_plate_3_ddc_1_dac_max_1100_dac_min_949.mat';
+
+A = matfile(file_name);
+A = A.radar_frames;
+
+Tau = 65.84;
+tau = Tau/size(A,1);
+tof = [1*tau:tau:size(A,1)*tau];
+x = tof
+xx = tau:tau/10:size(A,1)*tau
+y = abs(A(:,1));
+yy = spline(x, y, xx)
+
+TF = islocalmax(yy)
+
+% figure
+% colorbar;
+% imagesc(abs(A));
+
+figure
+subplot(2,1,1)
+% plot(tof.*15, abs(A(:,1)))
+plot(xx.*15, yy)
+title(extractBefore(file_name, '3_'));
+xlabel("Range (cm)")
+ylabel("Amplitude")
+xlim([0 200])
+ylim([0 12])
+
+
+file_name = '106cm_wood_120cm_soil_137cm_plate_3_ddc_1_dac_max_1100_dac_min_949.mat';
+
+A = matfile(file_name);
+A = A.radar_frames;
+
+Tau = 65.84
+tau = Tau/size(A,1);
+tof = [1*tau:tau:size(A,1)*tau];
+
+% figure
+% colorbar;
+% imagesc(abs(A));
+
+% figure
+subplot(2,1,2)
+plot(tof.*15, abs(A(:,1)))
+title(extractBefore(file_name, '3_'));
+xlabel("Range (cm)")
+ylabel("Amplitude")
+xlim([0 200])
+ylim([0 12])
+
+
+file_name = '42cm_4_full_bottles_water_soil_84cm_plate_3_ddc_1_dac_max_1100_dac_min_949.mat';
+
+A = matfile(file_name);
+A = A.radar_frames;
+
+Tau = 65.84
+tau = Tau/size(A,1);
+tof = [1*tau:tau:size(A,1)*tau];
+
+% figure
+% colorbar;
+% imagesc(abs(A));
+
+% figure
+subplot(2,2,3)
+plot(tof.*15, abs(A(:,1)))
+title(extractBefore(file_name, 'soil'));
+xlabel("Range (cm)")
+ylabel("Amplitude")
+xlim([0 200])
+ylim([0 12])
+
+
+file_name = '104cm_plate_3_ddc_1_dac_max_1100_dac_min_949.mat';
+
+A = matfile(file_name);
+A = A.radar_frames;
+
+Tau = 65.84
+tau = Tau/size(A,1);
+tof = [1*tau:tau:size(A,1)*tau];
+
+% figure
+% colorbar;
+% imagesc(abs(A));
+
+% figure
+subplot(2,2,4)
+plot(tof.*15, abs(A(:,1)))
+title(extractBefore(file_name, 'soil'));
+xlabel("Range (cm)")
+ylabel("Amplitude")
+xlim([0 200])
+ylim([0 10])
