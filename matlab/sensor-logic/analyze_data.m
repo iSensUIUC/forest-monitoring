@@ -22,19 +22,8 @@ xlabel('timestamps (seconds)')
 ylabel('radar frame')
 p = 30; % fps
     
-obj = pipeline(bscan_data, tof, 0.1, p, A.timestamps, '98cm tag 100ms')
+obj = pipeline(A.radar_frames, A.timestamps, 20, bins, T, 0.1, regexprep("98cm_tag_100ms_3_ddc_0", '_', ' '));
 
-% A = load('1m_tag_100ms_3_ddc_1.mat');
-% 
-% 
-% radar_frames = A.radar_frames(10:100,:); % ddc en
-% imagesc(abs(radar_frames))
-% figure;
-% plot(A.timestamps, (1:300))
-% xlabel('timestamps (HHMMSS)')
-% ylabel('radar frame')
-% 
-% obj = pipeline(radar_frames, 0.1, 10, A.timestamps, '1m tag 100ms')
 figure
 tag = normalize(bscan_data(obj.selR,:));
 sum(tag(:) >= 0.5)
