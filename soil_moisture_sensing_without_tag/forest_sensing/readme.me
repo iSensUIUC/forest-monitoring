@@ -9,3 +9,11 @@ and background subtraction( subtract the data that radar gotten when there is so
 The csv folder contains the csv file for data collected.
 The data is in shape of 188*1, 188 is maximum time of flight of one radar pulse, so the longest signal stands for T = 65.84 ns,
 which is row 188. So the TOF difference between each row is 65.84ns/188.
+
+Ground is at 84cm high, which is 5.6034ns in Time of Flight.  
+
+Background subtraction is done in the way that there is no soil box, measure the data. When there is soil box, measure the data.
+Then subtract the former from the later.
+
+Pictures of experimental setup is shown in with_soil_box_with_metal_plate and without_soil_box_with_metal_plate
+ and with_soil_box_without_metal_plate and without_soil_box_without_metal_plate.
