@@ -1,0 +1,11 @@
+Sand is used as soil, different depths of sand are tried: 0cm, 5cm, 10cm, 15cm, 20cm.
+For each depth, metal plate is also placed or not placed for comparison.
+The plot result can be viewed in the plot folder.
+
+For each folder in plot,
+it contains background(which means no soil) data, data collected from radar with soil,
+and background subtraction( subtract the data that radar gotten when there is soil between the data that when there is no soil).
+
+The csv folder contains the csv file for data collected.
+The data is in shape of 188*1, 188 is maximum time of flight of one radar pulse, so the longest signal stands for T = 65.84 ns,
+which is row 188. So the TOF difference between each row is 65.84ns/188.
