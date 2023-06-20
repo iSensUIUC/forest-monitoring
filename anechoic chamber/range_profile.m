@@ -14,6 +14,7 @@ Tau = 65.84;
 T = 65.84; %ns
 speed_of_light=14.9896229;%speed of light divided by 2 in cm/ns
 tau = Tau/size(A,1);
+% range = [tau:tau:size(A,1)*tau]*speed_of_light;
 
 % Compute the average across columns
 A_avg = mean(A, 2);
