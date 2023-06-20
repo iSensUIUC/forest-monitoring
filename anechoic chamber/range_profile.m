@@ -14,8 +14,8 @@ Tau = 65.84;
 T = 65.84; %ns
 speed_of_light=14.9896229;%speed of light divided by 2 in cm/ns
 tau = Tau/size(A,1);
-% range = [tau:tau:size(A,1)*tau]*speed_of_light;
-range = [tau:tau:size(A,1)*tau];
+range = [tau:tau:size(A,1)*tau]*speed_of_light;
+% range = [tau:tau:size(A,1)*tau];
 
 % Compute the average across columns
 A_avg = mean(A, 2);
@@ -24,7 +24,7 @@ figure
 plot(range(range_to_cut+1:end), A_avg(range_to_cut+1:end))
 plot_name = replace(file_name, "_", " ");  % replace spaces with underscores
 title(plot_name+" range profile");
-xlabel("TOF (ns)")
+xlabel("range (cm)");
 ylabel("Average Amplitude")
 % Prepare the file_name variable for inclusion in the filename
 name_no_spaces = replace(file_name, " ", "_");  % replace spaces with underscores
