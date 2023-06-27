@@ -53,8 +53,8 @@ methods
         expDopFinal=normalize(expDopFinal,2,'range');
         
         H = fft(bscan_data(from:to,:), NFFTVel, 2);
-        %figure;imagesc((1:numCols), tof.*14.9896, abs(H))
-
+%         figure;imagesc((1:numCols), tof.*14.9896, abs(H))
+% 
 %         title(plotTitle + " sinc template");
 %         xlabel("Frequency")
 %         ylabel("Range (cm)")
@@ -66,9 +66,18 @@ methods
         % calculate the autocorelation
         normR2=abs(sum(abs(normSig).*repmat(abs(expDopFinal),size(normSig,1),1),2));
         %the autocorrelation results
-        figure;plot(tof.*14.9896, normR2) % c = 14.9896 cm/ns
+
+        fig=figure;
+        plot(tof.*14.9896, normR2) % c = 14.9896 cm/ns
         title(plotTitle + " correlation with square wave");
         xlabel("Range (cm)")
+        set(fig, 'Position', [100, 50, 700, 400]) % [left, bottom, width, height]
+        % Save the plot to the 'plot' folder
+        if ~exist('plot', 'dir')
+           mkdir('plot')
+        end
+        saveas(gcf, fullfile('plot', plotTitle + " correlation with square wave.png"));
+
 
         %selR hold the range bin with max correlation
         [obj.finalVal, obj.selR] = max(normR2);

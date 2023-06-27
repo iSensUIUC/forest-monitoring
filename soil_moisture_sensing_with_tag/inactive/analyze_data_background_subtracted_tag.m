@@ -1,3 +1,5 @@
+%this file use different background subtaction method. It subtract data
+%from tag with data from background
 close all;
 clear;
 clc;
@@ -20,7 +22,7 @@ obj = pipeline(A.radar_frames, A.timestamps, range_to_cut, bins, T, 0.1, regexpr
 
 
 C = A.radar_frames - B.radar_frames;
-obj1 = pipeline(C, A.timestamps, range_to_cut, bins, T, 0.1, regexprep("pipeline_result_after_background_subtraction", '_', ' '));
+obj = pipeline(C, A.timestamps, range_to_cut, bins, T, 0.1, regexprep("pipeline_result_after_background_subtraction", '_', ' '));
 
 Tau = 65.84
 tau = Tau/size(C,1);
