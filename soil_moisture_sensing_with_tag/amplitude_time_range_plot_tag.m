@@ -13,7 +13,7 @@ tx=[3];
 ddc_en=1;
 dac_max=1100;
 dac_min=949;
-name = "no soil";
+name = "Example";
 for i=1:size(tx,2)
     file_name = name + " tx " + tx(i) + " ddc " + ddc_en + " dac max " + dac_max + " dac min " + dac_min + " ";
     if tx(i) == 3
@@ -35,12 +35,12 @@ for i=1:size(tx,2)
     range=[tau:tau:size(A,1)*tau]*speed_of_light;
     
     %plot without background subtraction
-%     figure;
-%     imagesc([1:size(A,2)], range(range_to_cut+1:end), abs(A(range_to_cut+1:end,:)));
-%     colorbar;
-%     title(['with tag amplitude with range versus timeframe before subtraction ' center_frequency])
-%     xlabel('Timeframe Number');
-%     ylabel('Range (cm)');
+    figure;
+    imagesc([1:size(A,2)], range(range_to_cut+1:end), abs(A(range_to_cut+1:end,:)));
+    colorbar;
+    title(['with tag amplitude with range versus timeframe before subtraction ' center_frequency])
+    xlabel('Timeframe Number');
+    ylabel('Range (cm)');
 
     % do pipeline before background subtraction
     % obj = pipeline(B.radar_frames, B.timestamps, range_to_cut, bins, T, 0.1, regexprep("pipeline_result_with_background", '_', ' '));
@@ -60,7 +60,7 @@ for i=1:size(tx,2)
     end
     saveas(gcf, fullfile('plot', file_name + "heatmap after background subtraction.png"));
     
-%     obj1 = pipeline(D, B.timestamps, range_to_cut+1, bins, T, 0.1, regexprep(name+" pipeline result after subtracting first frame "+center_frequency, '_', ' '));
+    obj1 = pipeline(D, B.timestamps, range_to_cut+1, bins, T, 0.1, regexprep(name+" pipeline result after subtracting first frame "+center_frequency, '_', ' '));
     
     bscan_data=abs(D);
     from=range_to_cut+1;

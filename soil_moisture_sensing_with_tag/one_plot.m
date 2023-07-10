@@ -5,7 +5,7 @@ close all;
 
 range_to_cut=1
 
-tx=[4];
+tx=[3];
 ddc_en=1;
 dac_max=1100;
 dac_min=949;

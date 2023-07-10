@@ -1,12 +1,12 @@
 close all;
 clear;
 clc;
-name = "two frequency";
+name = "Example";
 % name = "background";
 
 
 
-com_port = 'COM4'; % adjust for *your* COM port!
+com_port = 'COM6'; % adjust for *your* COM port!
 r = vcom_xep_radar_connector(com_port);
 r.Open('X4');
 
