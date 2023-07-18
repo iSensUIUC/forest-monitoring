@@ -12,7 +12,7 @@ tx=[3];
 ddc_en=1;
 dac_max=1100;
 dac_min=949;
-name = "15cm soil";
+name = "5 cm depth, 79 cm soil height, 129 cm total height";
 for i=1:size(tx,2)
     file_name = name + " tx " + tx(i) + " ddc " + ddc_en + " dac max " + dac_max + " dac min " + dac_min + " ";
     if tx(i) == 3

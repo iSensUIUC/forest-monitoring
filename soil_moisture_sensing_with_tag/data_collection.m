@@ -1,12 +1,12 @@
 close all;
 clear;
 clc;
-name = "Example";
+name = "5 cm depth, 79 cm soil height, 129 cm total height";
 % name = "background";
 
 
 
-com_port = 'COM6'; % adjust for *your* COM port!
+com_port = 'COM7'; % adjust for *your* COM port!
 r = vcom_xep_radar_connector(com_port);
 r.Open('X4');
 

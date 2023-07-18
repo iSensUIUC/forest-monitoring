@@ -3,7 +3,7 @@ clear
 clc
 close all;
 
-range_to_cut=1
+range_to_cut=0
 
 tx=[3];
 ddc_en=1;
@@ -19,6 +19,9 @@ speed_of_light=14.9896229;%speed of light divided by 2 in cm/ns
 % Prepare the figure for the plot
 figure;
 hold on;
+
+% Initialize empty array
+selR_array = [];
 
 % Iterate over each file
 for n = 1:length(names)
@@ -44,7 +47,10 @@ for n = 1:length(names)
 
         % plot normR2 from the pipeline object
         plot(tof, obj1.normR2)
-        obj1.selR
+
+        % Append obj1.selR to selR_array
+%         selR_array = [selR_array; obj1.selR*tau*speed_of_light];
+        selR_array = [selR_array; obj1.selR];
 
     end
 end
@@ -55,3 +61,8 @@ xlabel("Range (cm)");
 ylabel("Autocorrelation value");
 legend(names, 'Location', 'best');
 hold off;
+
+disp(selR_array);
+disp(selR_array*tau*speed_of_light);
+
+

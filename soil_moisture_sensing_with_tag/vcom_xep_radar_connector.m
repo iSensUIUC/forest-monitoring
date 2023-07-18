@@ -23,7 +23,7 @@ classdef vcom_xep_radar_connector < handle
         x4DownConverter = 0;
  
         % System options
-        dirpath = fileparts(which('xep_radar_connector'));
+        dirpath = fileparts(which('xep_radar_connector'))
        
         % Experimental Options (Alpha features)
         DEV_v2_packet_type = 0;
