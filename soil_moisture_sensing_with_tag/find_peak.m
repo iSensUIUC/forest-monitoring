@@ -2,13 +2,26 @@ clear
 clc
 close all;
 
+tag_calibration=27.73;%in cm
+from_tag_to_soil_bottom=30;%in cm
+
 range_to_cut=0
 
 tx=[3];
 ddc_en=1;
 dac_max=1100;
 dac_min=949;
-names = ["5 cm depth, 33 cm soil height, 83 cm total height","5 cm depth, 48 cm soil height, 98 cm total height","5 cm depth, 64 cm soil height, 114 cm total height","5 cm depth, 79 cm soil height, 129 cm total height"];
+%5 cm depth of soil
+% names = ["5 cm depth, 33 cm soil height, 83 cm total height","5 cm depth, 48 cm soil height, 98 cm total height","5 cm depth, 64 cm soil height, 114 cm total height","5 cm depth, 79 cm soil height, 129 cm total height"];
+
+%10 cm depth of soil
+% names= ["10 cm depth, 76 cm soil height, 123 cm total height","10 cm depth, 65 cm soil height, 110 cm total height","10 cm depth, 52 cm soil height, 98 cm total height","10 cm depth, 35 cm soil height, 82 cm total height"];
+
+% 9 cm depth of soil
+% names= ["9 cm depth, 80 cm soil height, 127 cm total height","9 cm depth, 65 cm soil height, 113 cm total height","9 cm depth, 50 cm soil height, 98 cm total height","9 cm depth, 38 cm soil height, 86 cm total height"];
+
+% 2 cm depth of soil
+names= ["2 cm depth, 87 cm soil height, 127 cm total height","2 cm depth, 72 cm soil height, 113 cm total height","2 cm depth, 57 cm soil height, 98 cm total height","2 cm depth, 45 cm soil height, 86 cm total height"];
 
 Tau = 65.84; %ns
 T = Tau;
@@ -62,7 +75,8 @@ legend(names, 'Location', 'best');
 hold off;
 
 %indicate location of tag
-disp(selR_array);
+% disp(selR_array);
+disp("the distance of tag");
 disp(selR_array*tau*speed_of_light);
 
 selR_array=selR_array';
@@ -125,8 +139,7 @@ for i = 1:length(names)
     % Subtract i-th element of selR_array from each element of i-th array of peakLocations
     subtract_result{i} = peakLocations{i} - selR_array(i);
 end
-
-disp(subtract_result);
+% disp(subtract_result);
 
 %%%%%%
 %find the numbers that form a line with slope 0
@@ -150,15 +163,17 @@ selected_numbers = combinations(index, :);
 
 
 
-%%%%%
-disp(selected_numbers);
+% %%%%%
+disp("from soil surface to tag is ");
+
+disp(-selected_numbers);
 
 % Add the i-th number in selR_array to the i-th number in selected_numbers
 soilSurfaceLocations = selected_numbers + selR_array;
 
 % Display the resulting array
-disp("soil surface is");
-disp(soilSurfaceLocations/tau/speed_of_light);
+disp("from radar to soil surface");
+disp(soilSurfaceLocations'+"cm");
 
 fig=figure;
 hold on;
@@ -199,7 +214,15 @@ ylabel("Average Amplitude");
 legend(h, names, 'Location', 'best');  % Use the handles for the legend
 hold off;
 
+disp("averaged___from soil surface to tag without offset is ");
+disp(-mean(selected_numbers)+"cm");
 
+average_from_soil_surface_to_tag=-mean(selected_numbers);
+disp("soil depth without offset is ");
+disp((-(selected_numbers)-from_tag_to_soil_bottom));
+
+soil_depth=average_from_soil_surface_to_tag-tag_calibration-from_tag_to_soil_bottom;
+disp("soil depth is "+soil_depth+"cm");
 
 
 

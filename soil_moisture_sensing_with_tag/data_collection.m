@@ -1,9 +1,7 @@
 close all;
 clear;
 clc;
-name = "5 cm depth, 79 cm soil height, 129 cm total height";
-% name = "background";
-
+name = "2 cm depth, 45 cm soil height, 86 cm total height";
 
 
 com_port = 'COM7'; % adjust for *your* COM port!
@@ -43,7 +41,7 @@ duration = 128;
 tag = "100ms"
 
 % tx = [3];   
-tx = [3 4];
+tx = [3];
 % tx = [4];   
 
 ddc_en = [0 1];
