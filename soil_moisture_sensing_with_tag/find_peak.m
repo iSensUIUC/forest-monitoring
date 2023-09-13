@@ -18,10 +18,10 @@ dac_min=949;
 % names= ["10 cm depth, 76 cm soil height, 123 cm total height","10 cm depth, 65 cm soil height, 110 cm total height","10 cm depth, 52 cm soil height, 98 cm total height","10 cm depth, 35 cm soil height, 82 cm total height"];
 
 % 9 cm depth of soil
-% names= ["9 cm depth, 80 cm soil height, 127 cm total height","9 cm depth, 65 cm soil height, 113 cm total height","9 cm depth, 50 cm soil height, 98 cm total height","9 cm depth, 38 cm soil height, 86 cm total height"];
+names= ["9 cm depth, 80 cm soil height, 127 cm total height","9 cm depth, 65 cm soil height, 113 cm total height","9 cm depth, 50 cm soil height, 98 cm total height","9 cm depth, 38 cm soil height, 86 cm total height"];
 
 % 2 cm depth of soil
-names= ["2 cm depth, 87 cm soil height, 127 cm total height","2 cm depth, 72 cm soil height, 113 cm total height","2 cm depth, 57 cm soil height, 98 cm total height","2 cm depth, 45 cm soil height, 86 cm total height"];
+% names= ["2 cm depth, 87 cm soil height, 127 cm total height","2 cm depth, 72 cm soil height, 113 cm total height","2 cm depth, 57 cm soil height, 98 cm total height","2 cm depth, 45 cm soil height, 86 cm total height"];
 
 Tau = 65.84; %ns
 T = Tau;

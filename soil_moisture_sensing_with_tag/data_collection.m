@@ -1,10 +1,10 @@
 close all;
 clear;
 clc;
-name = "2 cm depth, 45 cm soil height, 86 cm total height";
+name = "vertical_0p951_hori_0_p0_no_tag";
 
 
-com_port = 'COM7'; % adjust for *your* COM port!
+com_port = 'COM4'; % adjust for *your* COM port!
 r = vcom_xep_radar_connector(com_port);
 r.Open('X4');
 
@@ -30,7 +30,7 @@ frame_end = r.Item('frame_end');
 fprintf('Frame area is %f to %f\n', frame_start, frame_end);
 
 
-max_fps = (15187500/(iterations*pps*(dac_max-dac_min+1)))*0.95;
+max_fps = (15187500/(iterations*pps*(dac_max-dac_min+1)))*0.95;  % << What is this used for?
 
 % fps = 35; % we get around 35 fps
 % t = 12; % in seconds
@@ -41,12 +41,12 @@ duration = 128;
 tag = "100ms"
 
 % tx = [3];   
-tx = [3];
+tx = [3];  % << What is the meaning of `3`?
 % tx = [4];   
 
 ddc_en = [0 1];
 % dac_vals = [20z47 1896; 1895 1744; 1743 1592; 1591 1440; 1439 1288; 1287 1136; 1135 984; 983 832; 831 680; 679 528; 527 376; 375 224; 223 72; 2047 0; 2047 1896; 1895 1744; 1743 1592; 1591 1440; 1439 1288; 1287 1136; 1135 984; 983 832; 831 680; 679 528; 527 376; 375 224; 223 72; 2047 0];
-dac_vals = [1100 949;];
+dac_vals = [1100 949];
 
 % dac_vals = readtable('dac_vals.csv');
 % dac_vals = dac_vals{:,:};

@@ -13,7 +13,7 @@ tx=[3];
 ddc_en=1;
 dac_max=1100;
 dac_min=949;
-name = "2 cm depth, 45 cm soil height, 86 cm total height";
+name = "vertical_0p951_hori_0_p0_no_tag";
 for i=1:size(tx,2)
     file_name = name + " tx " + tx(i) + " ddc " + ddc_en + " dac max " + dac_max + " dac min " + dac_min + " ";
     if tx(i) == 3
@@ -34,9 +34,16 @@ for i=1:size(tx,2)
     tof = [tau:tau:size(A,1)*tau];
     range=[tau:tau:size(A,1)*tau]*speed_of_light;
     
+%     figure;
+%     plot(range,abs(A(:,1)));
+
+
+
     %plot without background subtraction
     figure;
     imagesc([1:size(A,2)], range(range_to_cut+1:end), abs(A(range_to_cut+1:end,:)));
+    
+
     colorbar;
     title(['with tag amplitude with range versus timeframe before subtraction ' center_frequency])
     xlabel('Timeframe Number');
