@@ -9,7 +9,18 @@ tx=[3];
 ddc_en=1;
 dac_max=1100;
 dac_min=949;
-names = ["5 cm depth, 33 cm soil height, 83 cm total height","5 cm depth, 48 cm soil height, 98 cm total height","5 cm depth, 64 cm soil height, 114 cm total height","5 cm depth, 79 cm soil height, 129 cm total height"];
+% names = ["oct28_5cm_soil_0cm_lateral_61pt25inch_height","oct28_5cm_soil_15cm_lateral_61pt25inch_height","oct28_5cm_soil_30cm_lateral_61pt25inch_height","oct28_5cm_soil_45cm_lateral_61pt25inch_height","oct28_5cm_soil_60cm_lateral_61pt25inch_height"];
+% names = ["oct28_9cm_soil_0cm_lateral_61pt25inch_height","oct28_9cm_soil_15cm_lateral_61pt25inch_height","oct28_9cm_soil_30cm_lateral_61pt25inch_height","oct28_9cm_soil_45cm_lateral_61pt25inch_height","oct28_9cm_soil_60cm_lateral_61pt25inch_height"];
+% names = ["oct28_no_soil_0m_lateral_61pt25_height","oct28_no_soil_15cm_lateral_61pt25inch_height","oct28_no_soil_30cm_lateral_61pt25inch_height","oct28_no_soil_45cm_lateral_61pt25inch_height","oct28_no_soil_60cm_lateral_61pt25inch_height"];
+
+% names = ["oct30 without plant tag buried 15cm soil 0cm lateral displacement 151p8 cm height", "oct30 without plant tag buried 9cm soil 0cm lateral displacement 151p8 cm height","oct30 without plant tag buried 5cm soil 0cm lateral displacement 151p8 cm height","oct30 without plant tag buried 0cm soil 0cm lateral displacement 151p8 cm height"]
+% names = ["oct28 with plant 0cm lateral 55p8 inch height","oct28 with plant 15cm lateral 55p8 inch height","oct28 with plant 30cm lateral 55p8 inch height","oct28 with plant 45cm lateral 55p8 inch height","oct28 with plant 60cm lateral 55p8 inch height"];
+% names = ["oct30 without plant 15cm wood 0cm lateral 53 inch height", "oct30 without plant 12cm wood 0cm lateral 53 inch height","oct30 without plant 8cm wood 0cm lateral 53 inch height","oct30 without plant 3cm wood 0cm lateral 53 inch height","oct30 without plant no wood 0cm lateral 53 inch height"]
+
+names = ["oct28 with plant with leaves front2 0cm lateral 55p8 inch height","oct28 with plant without leaves front2 0cm lateral 55p8 inch height"]
+
+% names= ["oct30 with plant 3cm wood 0cm lateral 53 inch height","oct30 with plant no wood 0cm lateral 53 inch height"]
+% names = ["oct28 without plant 0cm lateral 55p8 inch height","oct28 without plant 15cm lateral 55p8 inch height","oct28 without plant 30cm lateral 55p8 inch height","oct28 without plant 45cm lateral 55p8 inch height","oct28 without plant 60cm lateral 55p8 inch height"];
 
 Tau = 65.84; %ns
 T = Tau;
@@ -30,6 +41,7 @@ for n = 1:length(names)
         elseif tx(i) == 4
             center_frequency = '8.748 GHz';  % '8.748 GHz' as a string
         end
+
         B = matfile(file_name);
         [bins, samples] = size(B.radar_frames);
         A = B.radar_frames;
@@ -53,5 +65,13 @@ end
 title("Combined correlation with square wave"+center_frequency);
 xlabel("Range (cm)");
 ylabel("Autocorrelation value");
+
+for i = 1:numel(names)
+    % Replace "_" with " " using strrep and store the result in modifiedStrArray
+    names(i) = strrep(names(i), '_', ' ');
+    names(i) = strrep(names(i), '55p8 inch', '141.7 cm');
+
+end
+
 legend(names, 'Location', 'best');
 hold off;

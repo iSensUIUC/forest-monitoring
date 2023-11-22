@@ -7,13 +7,14 @@ clear
 clc
 close all;
 
-range_to_cut=0
+range_to_cut = 6
 
 tx=[3];
 ddc_en=1;
 dac_max=1100;
 dac_min=949;
-name = "vertical_0p951_hori_0_p0_no_tag";
+name = "oct30 without plant tag buried 15cm soil 0cm lateral displacement 151p8 cm height"; 
+
 for i=1:size(tx,2)
     file_name = name + " tx " + tx(i) + " ddc " + ddc_en + " dac max " + dac_max + " dac min " + dac_min + " ";
     if tx(i) == 3
@@ -26,8 +27,8 @@ for i=1:size(tx,2)
     
     A = B.radar_frames;
     
-    Tau = 65.84
-    T = 65.84; %ns
+    Tau = 65.84;
+    T = 65.84;
     
     speed_of_light=14.9896229;%speed of light divided by 2 in cm/ns
     tau = Tau/size(A,1);
@@ -41,7 +42,7 @@ for i=1:size(tx,2)
 
     %plot without background subtraction
     figure;
-    imagesc([1:size(A,2)], range(range_to_cut+1:end), abs(A(range_to_cut+1:end,:)));
+    imagesc(1:size(A,2), range(range_to_cut+1:end), abs(A(range_to_cut+1:end,:)));
     
 
     colorbar;

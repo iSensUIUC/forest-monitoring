@@ -1,7 +1,7 @@
 close all;
 clear;
 clc;
-name = "vertical_0p951_hori_0_p0_no_tag";
+name = "oct30 without plant tag buried 15cm soil 0cm lateral displacement 151p8 cm height"; 
 
 
 com_port = 'COM4'; % adjust for *your* COM port!
@@ -35,14 +35,9 @@ max_fps = (15187500/(iterations*pps*(dac_max-dac_min+1)))*0.95;  % << What is th
 % fps = 35; % we get around 35 fps
 % t = 12; % in seconds
 
-duration = 128;
-
-% distance = "background_140cm"
-tag = "100ms"
-
-% tx = [3];   
-tx = [3];  % << What is the meaning of `3`?
-% tx = [4];   
+duration = 50;
+   
+tx = [3 4];
 
 ddc_en = [0 1];
 % dac_vals = [20z47 1896; 1895 1744; 1743 1592; 1591 1440; 1439 1288; 1287 1136; 1135 984; 983 832; 831 680; 679 528; 527 376; 375 224; 223 72; 2047 0; 2047 1896; 1895 1744; 1743 1592; 1591 1440; 1439 1288; 1287 1136; 1135 984; 983 832; 831 680; 679 528; 527 376; 375 224; 223 72; 2047 0];

@@ -53,11 +53,7 @@ methods
         expDopFinal=normalize(expDopFinal,2,'range');
         
         H = fft(bscan_data(from:to,:), NFFTVel, 2);
-%         figure;imagesc((1:numCols), tof.*14.9896, abs(H))
-% 
-%         title(plotTitle + " sinc template");
-%         xlabel("Frequency")
-%         ylabel("Range (cm)")
+
         %normalize the signal
         sig=squeeze(abs(H));
         normA = sig - min(sig(:));
