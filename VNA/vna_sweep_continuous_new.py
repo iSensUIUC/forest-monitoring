@@ -1,9 +1,7 @@
 import pyvisa
 import matplotlib.pyplot as plt
-import time
 import numpy as np
-from capture_rp import compute_pdp
-import csv
+from capture_rp import compute_pdp, get_avg_sparams
 import scipy.signal
 
 
@@ -16,7 +14,6 @@ HIGH_FREQ_GHZ = 5
 SPARAM_POINTS = 1024
 
 BACKGROUND_SUBTRACT = True
-SHOW_GUI = False
 
 # Connect to the VNA
 resourceManager = pyvisa.ResourceManager()
@@ -64,31 +61,13 @@ session.write("CALC1:PAR:MNUM 1")
 
 # session.write("SENS:SWE:POIN %d" % SPARAM_POINTS)
 
+
 # Set up continous plot
 plt.ion()
 
 fig = None
 first_pdp = None
-
-def get_range_profile(session, n_avg=1):
-    avg_sparams = None
-    for i in range(n_avg):
-        # Perfoms a single sweep
-        session.write("SENS1:SWE:MODE SING")
-        session.query("*OPC?")
-        # Get stimulus and formatted response data
-        buf = session.query_ascii_values("CALC1:MEAS1:DATA:SDATA?", container=np.array)
-        sparams = buf[::2] + 1j * buf[1::2]  # Interpret buffer as interleaved real and imaginary parts
-        if avg_sparams is None:
-            avg_sparams = sparams.copy()
-        else:
-            avg_sparams += sparams
-        frequencies = session.query_ascii_values("CALC1:MEAS1:X:VAL?")
-
-    return compute_pdp(avg_sparams/n_avg, frequencies)
-
-
-first_pdp = None
+first_sparams = None
 
 def update_table(tab_ax, peaks, pdp, vRange):
     if len(peaks) == 0:
@@ -98,59 +77,59 @@ def update_table(tab_ax, peaks, pdp, vRange):
     tab_ax.axis('off')
     peak_powers = ['%.03f' % val for val in 20*np.log10(np.abs(pdp[peaks]))]
     peak_phases = ['%.03f' % val for val in np.angle(pdp[peaks])]
-    cellText = [['%.03f' % vRange[peaks[i]], peaks[i], mag, phase] for i, (mag, phase) in enumerate(zip(peak_powers, peak_phases))]
-    tab_ax.table(cellText=cellText, colLabels=["Distance", "Index", "Power (dB)", "Phase"], loc='center')
+    cellText = [['%.03f' % vRange[peaks[i]], mag, phase] for i, (mag, phase) in enumerate(zip(peak_powers, peak_phases))]
+    tab_ax.table(cellText=cellText, colLabels=["Distance", "Power (dB)", "Phase"], loc='center')
 
+
+phase_at_tag = []
 counter = 0
 
-RPS_TO_CAPTURE = 100
-
-rps = np.zeros((RPS_TO_CAPTURE,SPARAM_POINTS), dtype=np.complex64)
-
-while counter < RPS_TO_CAPTURE:    
+while counter < 100:  
     # Make plot if this is the first iteration
     if fig is None:
-        pdp, vRange = get_range_profile(session, n_avg=1)
+        fig = plt.figure()
+        ax = fig.add_subplot(211)
+        ax.set_title("Live Range Profile")
+        ax.set_xlabel("Distance (m)")
+        ax.set_ylabel("Amplitude")
+        sparams, frequencies = get_avg_sparams(session, n_avg=1)
+        pdp, vRange = compute_pdp(sparams, frequencies)
+
+        lines, = ax.plot(vRange, np.abs(pdp))
         first_pdp = pdp.copy()
+        first_sparams = sparams.copy()
 
         # Find top 5 peaks
         peaks, _ = scipy.signal.find_peaks(np.abs(pdp))
         peaks = sorted(peaks, key=lambda x: np.abs(pdp[x]), reverse=True)[:5]
 
-        if SHOW_GUI:
-            fig = plt.figure()
-            ax = fig.add_subplot(211)
-            ax.set_title("Live Range Profile")
-            ax.set_xlabel("Distance (m)")
-            ax.set_ylabel("Amplitude")
-            lines, = ax.plot(vRange, np.abs(pdp))
-            # Make table
-            tab_ax = fig.add_subplot(212)
-            update_table(tab_ax, peaks, pdp, vRange)
+        # Make table
+        tab_ax = fig.add_subplot(212)
+        update_table(tab_ax, peaks, pdp, vRange)
 
     # Push to plot and update screen
-    pdp, vRange = get_range_profile(session, n_avg=1)
-    pdp -= first_pdp
-    # Find peaks
+    sparams, frequencies = get_avg_sparams(session, n_avg=1)
+    if BACKGROUND_SUBTRACT:
+        sparams -= first_sparams
+    pdp, vRange = compute_pdp(sparams, frequencies)
+    # Update table
     peaks, _ = scipy.signal.find_peaks(np.abs(pdp))
     peaks = sorted(peaks, key=lambda x: np.abs(pdp[x]), reverse=True)[:5]
-    if SHOW_GUI:
-        update_table(tab_ax, peaks, pdp, vRange)
-        # note down this time in the time array
-        lines.set_xdata(vRange)
-        lines.set_ydata(np.abs(pdp))
-        fig.canvas.draw()
-        fig.canvas.flush_events()
-    # record the range profile
-    rps[counter] = pdp
-
+    print('peaks', peaks)
+    update_table(tab_ax, peaks, pdp, vRange)
+    # note down this time in the time array
+    lines.set_xdata(vRange)
+    lines.set_ydata(np.abs(pdp))
+    fig.canvas.draw()
+    fig.canvas.flush_events()
+    phase_at_tag.append(np.angle(pdp[44]))
     counter += 1
 
-# plt.clf()
-# plt.title('Phase at index 42 of range profile (corresponding to tag)')
-# plt.xlabel('Frame #')
-# plt.ylabel('Phase (rad)')
-# plt.plot(phases_at_tag)
-# plt.show(block=True)
+plt.clf()
+plt.title('Phase at index 44 of range profile (corresponding to tag)')
+plt.xlabel('Frame #')
+plt.ylabel('Phase (rad)')
+plt.plot(phase_at_tag)
+plt.show(block=True)
 
 print('pause')
