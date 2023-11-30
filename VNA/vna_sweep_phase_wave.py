@@ -5,6 +5,7 @@ import numpy as np
 from capture_rp import compute_pdp
 import csv
 import scipy.signal
+import pickle
 
 
 # Access this under "Instrument" -> "Setup" -> "System Setup" -> "Remote Interface..."
@@ -17,6 +18,8 @@ SPARAM_POINTS = 1024
 
 BACKGROUND_SUBTRACT = True
 SHOW_GUI = False
+
+TRIAL_NAME = "empty_box"
 
 # Connect to the VNA
 resourceManager = pyvisa.ResourceManager()
@@ -103,14 +106,33 @@ def update_table(tab_ax, peaks, pdp, vRange):
 
 counter = 0
 
-RPS_TO_CAPTURE = 100
+RPS_TO_CAPTURE = 600
 
 rps = np.zeros((RPS_TO_CAPTURE,SPARAM_POINTS), dtype=np.complex64)
 
+
+time_array = []
+vRange_array = []
+pdp_array = []
+phase_array = []
+
+# Start timer
+start_time = time.time()
+
 while counter < RPS_TO_CAPTURE:    
+    if counter % 200 == 0:
+        print("Captured %d range profiles" % counter)
+
     # Make plot if this is the first iteration
-    if fig is None:
+    if counter == 0:
         pdp, vRange = get_range_profile(session, n_avg=1)
+        time_array.append(time.time() - start_time)
+
+        # Store initial values
+        pdp_array.append(pdp)
+        vRange_array.append(vRange)
+        # phase_array.append(np.angle(pdp))
+
         first_pdp = pdp.copy()
 
         # Find top 5 peaks
@@ -130,6 +152,14 @@ while counter < RPS_TO_CAPTURE:
 
     # Push to plot and update screen
     pdp, vRange = get_range_profile(session, n_avg=1)
+    # Store values in arrays
+    # pdp_array.append(pdp - first_pdp)
+    time_array.append(time.time() - start_time)
+    # phase_array.append(np.angle(pdp)) # no background subtraction
+    # print(np.angle(pdp[56]))
+
+    # record the raw range profile
+    rps[counter] = pdp
     pdp -= first_pdp
     # Find peaks
     peaks, _ = scipy.signal.find_peaks(np.abs(pdp))
@@ -141,8 +171,6 @@ while counter < RPS_TO_CAPTURE:
         lines.set_ydata(np.abs(pdp))
         fig.canvas.draw()
         fig.canvas.flush_events()
-    # record the range profile
-    rps[counter] = pdp
 
     counter += 1
 
@@ -152,5 +180,37 @@ while counter < RPS_TO_CAPTURE:
 # plt.ylabel('Phase (rad)')
 # plt.plot(phases_at_tag)
 # plt.show(block=True)
+
+results = {
+    'rps': rps,
+    'times': time_array,
+}
+pickle.dump(results, open("nov29_rps_trial_%s.pkl" % TRIAL_NAME, "wb"))
+
+# with open('time_array.csv', 'w', newline='') as file:
+#     writer = csv.writer(file)
+#     for time_point in time_array:
+#         writer.writerow([time_point])
+
+# print("time_array saved to time_array Nov 28.csv")
+
+# with open('vRange_array.csv', 'w', newline='') as file:
+#     writer = csv.writer(file)
+#     writer.writerows(vRange_array)
+
+# print("vRange_array saved to vRange_array Nov 28.csv")
+
+# with open('pdp_array.csv', 'w', newline='') as file:
+#     writer = csv.writer(file)
+#     writer.writerows(pdp_array)
+
+# print("pdp_array saved to pdp_array Nov 28.csv")
+
+
+# with open('phase_array.csv', 'w', newline='') as file:
+#     writer = csv.writer(file)
+#     writer.writerows(phase_array)
+
+# print("phase_array saved to phase_array Nov 28.csv")
 
 print('pause')
