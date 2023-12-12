@@ -1,3 +1,4 @@
+# Folder structure 
 The folder VNA contains code for using VNA as SFCW radar to detect backscatter tag.
 
 The folder soil_moisture_sensing_with_tag contains code for using UWB radar to detect backscatter tag. 
@@ -6,8 +7,9 @@ The folder anechoic chamber contains data for SLMX4 UWB radar in anechoic chambe
 
 The folder soil_moisture_sensing_without_tag contains data for placing a metal plate under SLMX4 UWB radar, this folder is for Ishfaq's experiment in 2023 summer.
 
+
 Sensor-logic and walabot is written by Diego:
-# forest-monitoring
+
 We worked with the UWB radar from sensor logic and the FMCW radar from Walabot. You can find the code for each radar
 in the sensor-logic and walabot folders. In sensor-logic/python-code, you can find the Python connector
 for the MATLAB firmware. Depending on what OS you are using, you will have to adjust the port in the __init__
